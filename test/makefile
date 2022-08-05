@@ -7,7 +7,7 @@ all:
 	$(CC) $(TARGET).cpp -o $(TARGET) -I. -L. -l$(LIB)
 
 debug:
-	$(CC) $(TARGET).cpp -DDEBUG -o $(TARGET) -I. -L. -l$(LIB)
+	$(CC) $(TARGET).cpp -g -O0 -DDEBUG -o $(TARGET) -I. -L. -l$(LIB)
 
 release:
-	$(CC) $(TARGET).cpp -DNDEBUG -o $(TARGET) -I. -L. -l$(LIB)
+	$(CC) $(TARGET).cpp -O3 -DNDEBUG -o $(TARGET) -I. -L. -l$(LIB)

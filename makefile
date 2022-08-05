@@ -9,12 +9,12 @@ all:
 
 debug:
 	$(CC) -Xcompiler -fPIC -c $(TARGET).cu
-	$(CC) -shared -DDEBUG -o lib$(TARGET).so $(OBJS)
+	$(CC) -shared -g -O0 -DDEBUG -o lib$(TARGET).so $(OBJS)
 	rm *.o
 	cp libHighPassFilter.so test
 
 release:
 	$(CC) -Xcompiler -fPIC -c $(TARGET).cu
-	$(CC) -shared -DNDEBUG -o lib$(TARGET).so $(OBJS)
+	$(CC) -shared -O3 -DNDEBUG -o lib$(TARGET).so $(OBJS)
 	rm *.o
 	cp libHighPassFilter.so test
