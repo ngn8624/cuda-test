@@ -6,7 +6,7 @@
 
 bool isCudaError(cudaError_t status)
 {
-	//printf("[%d] %s\n", status, cudaGetErrorString(status));
+	// printf("[%d] %s\n", status, cudaGetErrorString(status));
 	return status != cudaSuccess;
 }
 
@@ -41,24 +41,24 @@ __global__ void kernel(const uint8_t* src, const int loopCnt, uint8_t* dest_1, u
 
 EXPORT int cudaHighPassFilter(const uint8_t* src, const int cnt, uint8_t* dest_1, uint8_t* dest_2, uint8_t* filter_1, uint8_t* filter_2, float* max_1, float* max_2)
 {
-	// printf("in cudaHighPassFilter\n");
-	// const int loop_cnt = cnt / UNIT_COUNT;
+	printf("in cudaHighPassFilter\n");
 	uint8_t *dev_src = 0, *dev_dest_1 = 0, *dev_dest_2 = 0, *dev_filter_1 = 0, *dev_filter_2 = 0;
 	float *dev_max_1 = 0, *dev_max_2 = 0;
 
 	cudaError_t status;
 
 	// printf("start checkVersion\n");
-	int runtimeVer = 0, driverVer = 0;
-	status = cudaRuntimeGetVersion(&runtimeVer);
-	if(isCudaError(status)) goto Exit;
-	status = cudaDriverGetVersion(&driverVer);
-	if(isCudaError(status)) goto Exit;
+	// int runtimeVer = 0, driverVer = 0;
+	// status = cudaRuntimeGetVersion(&runtimeVer);
+	// if(isCudaError(status)) goto Exit;
+	// status = cudaDriverGetVersion(&driverVer);
+	// if(isCudaError(status)) goto Exit;
 
+	printf("start cuda\n");
 	// printf("cuda runtime ver.%d / cuda driver ver.%d\n", runtimeVer, driverVer);
 	status = cudaSetDevice(0);
 	if(isCudaError(status)) goto Exit;
-	// printf("success cudaSetDevice\n");
+	printf("success cudaSetDevice\n");
 
 	status = cudaMalloc((void**)&dev_src, (cnt * 2) * sizeof(uint8_t));
 	if (isCudaError(status)) goto Exit;
@@ -74,19 +74,19 @@ EXPORT int cudaHighPassFilter(const uint8_t* src, const int cnt, uint8_t* dest_1
 	if (isCudaError(status)) goto Exit;
 	status = cudaMalloc((void**)&dev_max_2, UNIT_COUNT * sizeof(float));
 	if (isCudaError(status)) goto Exit;
-	// printf("success cudaMalloc\n");
+	printf("success cudaMalloc\n");
 
 	status = cudaMemcpy(dev_src, src, (cnt * 2) * sizeof(uint8_t), cudaMemcpyHostToDevice);
 	if (isCudaError(status)) goto Exit;
-	// printf("success cudaMemcpy\n");
+	printf("success cudaMemcpy\n");
 
 	kernel<<<1, UNIT_COUNT>>> (dev_src, cnt / UNIT_COUNT, dev_dest_1, dev_dest_2, dev_filter_1, dev_filter_2, dev_max_1, dev_max_2);
 	if (isCudaError(cudaGetLastError())) goto Exit;
-	// printf("success kernel\n");
+	printf("success kernel\n");
 
 	status = cudaDeviceSynchronize();
 	if (isCudaError(status)) goto Exit;
-	// printf("success cudaDeviceSynchronize\n");
+	printf("success cudaDeviceSynchronize\n");
 
 	status = cudaMemcpy(dest_1, dev_dest_1, cnt * sizeof(uint8_t), cudaMemcpyDeviceToHost);
 	if (isCudaError(status)) goto Exit;
@@ -100,7 +100,7 @@ EXPORT int cudaHighPassFilter(const uint8_t* src, const int cnt, uint8_t* dest_1
 	if (isCudaError(status)) goto Exit;
 	status = cudaMemcpy(max_2, dev_max_2, UNIT_COUNT * sizeof(float), cudaMemcpyDeviceToHost);
 	if (isCudaError(status)) goto Exit;
-	// printf("success cudaMemcpy\n");
+	printf("success cudaMemcpy\n");
 
 Exit:
 	cudaFree(dev_src);
