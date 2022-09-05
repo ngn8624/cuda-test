@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Aug 24 13:27:09 2022
+# Make data base, printed on Tue Aug 16 15:16:51 2022
 
 # Variables
 
@@ -25,7 +25,7 @@ XDG_SESSION_CLASS = user
 # environment
 XDG_SESSION_TYPE = x11
 # makefile (from 'makefile', line 2)
-TARGET = HighPassFilter
+TARGET = main
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
@@ -39,7 +39,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/dolyu/cuda-test
+CURDIR := /home/dolyu/cuda-test/test
 # makefile
 SHELL = /bin/sh
 # environment
@@ -47,7 +47,7 @@ VSCODE_NLS_CONFIG = {"locale":"ko","availableLanguages":{"*":"ko"},"_languagePac
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:49657
+JOURNAL_STREAM = 8:40652
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'makefile', line 1)
@@ -62,10 +62,10 @@ USERNAME = dolyu
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
-# makefile (from 'makefile', line 3)
+# makefile (from 'makefile', line 4)
 OBJS = $(TARGET).o
 # environment
-MANAGERPID = 1539
+MANAGERPID = 1549
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -77,7 +77,7 @@ PATH = /usr/local/cuda-11.7/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bi
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/wgslabs:@/tmp/.ICE-unix/1809,unix/wgslabs:/tmp/.ICE-unix/1809
+SESSION_MANAGER = local/wgslabs:@/tmp/.ICE-unix/1819,unix/wgslabs:/tmp/.ICE-unix/1819
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -85,7 +85,9 @@ XDG_MENU_PREFIX = gnome-
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 47a463bd761248cd97f85c8e855f42c6
+INVOCATION_ID = e768be5cdee54df8a666f0d97e35c4a8
+# makefile (from 'makefile', line 3)
+LIB = HighPassFilter
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -95,17 +97,17 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2697
+GIO_LAUNCHED_DESKTOP_FILE_PID = 6020
 # automatic
 %F = $(notdir $%)
 # environment
 DISPLAY = :1
 # environment
-PWD = /home/dolyu/cuda-test
+PWD = /home/dolyu/cuda-test/test
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1771
+SSH_AGENT_PID = 1781
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -123,7 +125,7 @@ VSCODE_CODE_CACHE_PATH = /home/dolyu/.config/Code/CachedData/3b889b090b5ad5793f5
 # environment
 LOGNAME = dolyu
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # environment
@@ -141,7 +143,7 @@ QT_IM_MODULE = ibus
 # environment
 SHLVL = 0
 # makefile (from 'makefile', line 1)
-CC = nvcc
+CC = g++
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # default
@@ -203,9 +205,9 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2697
+VSCODE_PID = 6020
 # variable set hash-table stats:
-# Load=97/1024=9%, Rehash=0, Collisions=14/131=11%
+# Load=98/1024=10%, Rehash=0, Collisions=13/130=10%
 
 # Pattern-specific Variable Values
 
@@ -213,9 +215,9 @@ VSCODE_PID = 2697
 
 # Directories
 
-# . (device 66306, inode 41681452): 12 files, no impossibilities.
+# . (device 66306, inode 41815753): 10 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 10 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -247,11 +249,9 @@ all:
 # automatic
 # ? := 
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=2/17=12%
-#  recipe to execute (from 'makefile', line 6):
-	$(CC) -Xcompiler -fPIC -c $(TARGET).cu
-	$(CC) -shared -o lib$(TARGET).so $(OBJS)
-	rm *.o
+# Load=8/32=25%, Rehash=0, Collisions=1/15=7%
+#  recipe to execute (from 'makefile', line 7):
+	$(CC) $(TARGET).cpp -o $(TARGET) -I. -L. -l$(LIB)
 
 # Not a target:
 .SUFFIXES:
@@ -263,29 +263,23 @@ debug:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 11):
-	$(CC) -Xcompiler -fPIC -c $(TARGET).cu
-	$(CC) -shared -g -O0 -DDEBUG -o lib$(TARGET).so $(OBJS)
-	rm *.o
-	cp libHighPassFilter.so test
+#  recipe to execute (from 'makefile', line 10):
+	$(CC) $(TARGET).cpp -g -O0 -DDEBUG -o $(TARGET) -I. -L. -l$(LIB)
 
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-08-05 18:22:06.514579151
+#  Last modified 2022-08-05 18:43:52.286394813
 #  File has been updated.
 #  Successfully updated.
 
 release:
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 17):
-	$(CC) -Xcompiler -fPIC -c $(TARGET).cu
-	$(CC) -shared -O3 -DNDEBUG -o lib$(TARGET).so $(OBJS)
-	rm *.o
-	cp libHighPassFilter.so test
+#  recipe to execute (from 'makefile', line 13):
+ 
+	$(CC) $(TARGET).cpp -O3 -DNDEBUG -o $(TARGET) -I. -L. -l$(LIB)
 
 # Not a target:
 .DEFAULT:
@@ -301,12 +295,12 @@ release:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 188 B / avg = 9 B
-# current buf: size = 8162 B / used = 188 B / count = 19 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 17 / storage = 210 B / avg = 12 B
+# current buf: size = 8162 B / used = 210 B / count = 17 / avg = 12 B
 
-# strcache performance: lookups = 28 / hit rate = 32%
+# strcache performance: lookups = 26 / hit rate = 34%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=1/28=4%
-# Finished Make data base on Wed Aug 24 13:27:09 2022
+# Load=17/8192=0%, Rehash=0, Collisions=1/26=4%
+# Finished Make data base on Tue Aug 16 15:16:51 2022
 
  
